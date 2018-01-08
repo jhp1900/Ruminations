@@ -16,9 +16,12 @@ public:
   Expr(int);
   Expr(const std::string&, Expr);
   Expr(const std::string&, Expr, Expr);
+  Expr(const std::string&, Expr, Expr, Expr);
   Expr(const Expr&);
   Expr& operator= (const Expr&);
   ~Expr();
+
+  int eval() const;
 };
 
 #endif // !CHAP8_EXPR_H

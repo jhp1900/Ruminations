@@ -22,6 +22,11 @@ Expr::Expr(const std::string & op, Expr left, Expr right)
   p = new Binary_node(op, left, right);
 }
 
+Expr::Expr(const std::string & op, Expr left, Expr middle, Expr right)
+{
+  p = new Ternary_node(op, left, middle, right);
+}
+
 Expr::Expr(const Expr & t)
 {
   p = t.p;
@@ -41,4 +46,9 @@ Expr::~Expr()
 {
   if (--p->use == 0)
     delete p;
+}
+
+int Expr::eval() const
+{
+  return p->eval();
 }
