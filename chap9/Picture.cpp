@@ -76,6 +76,18 @@ void Picture::copyblock(int row, int col, const Picture & p)
   }
 }
 
+void Picture::clear(int h1, int w1, int h2, int w2)
+{
+}
+
+void Picture::clear()
+{
+  for (int i = 0; i < height; ++i) {
+    for (int j = 0; j < width; ++j)
+      position(i, j) = ' ';
+  }
+}
+
 std::ostream & operator<<(std::ostream & o, const Picture & p)
 {
   for (int i = 0; i < p.height; ++i) {
@@ -86,17 +98,47 @@ std::ostream & operator<<(std::ostream & o, const Picture & p)
   return o;
 }
 
-Picture frame(const Picture&)
+Picture frame(const Picture& p)
 {
-  return Picture();
+  Picture r;
+  r.Init(p.height + 2, p.width + 2);
+
+  for (int i = 1; i < r.height - 1; ++i) {
+    r.position(i, 0) = '|';
+    r.position(i, r.width - 1) = '|';
+  }
+
+  for (int j = 1; j < r.width - 1; ++j) {
+    r.position(0, j) = '-';
+    r.position(r.height - 1, j) = '-';
+  }
+
+  r.position(0, 0) = '+';
+  r.position(0, r.width - 1) = '+';
+  r.position(r.height - 1, 0) = '+';
+  r.position(r.height - 1, r.width - 1) = '+';
+
+  r.copyblock(1, 1, p);
+
+  return r;
 }
 
-Picture operator&(const Picture &, const Picture &)
+Picture operator&(const Picture & p, const Picture & q)
 {
-  return Picture();
+  Picture r;
+  r.Init(p.height + q.height, std::max(p.width, q.width));
+  r.clear();
+  r.copyblock(0, 0, p);
+  r.copyblock(p.height, 0, q);
+  return r;
 }
 
-Picture operator|(const Picture &, const Picture &)
+Picture operator|(const Picture & p, const Picture & q)
 {
-  return Picture();
+  Picture r;
+  r.Init(std::max(p.height, q.height), p.width + q.width);
+  r.clear();
+  r.copyblock(0, 0, p);
+  r.copyblock(0, p.width, q);
+  return r;
 }

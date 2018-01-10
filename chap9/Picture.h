@@ -24,6 +24,8 @@ private:
   char & position(int row, int col);
   char position(int row, int col) const;
   void copyblock(int h, int w, const Picture& p);
+  void clear(int h1, int w1, int h2, int w2);
+  void clear();
 
 private:
   int height, width;
